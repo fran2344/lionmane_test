@@ -17,8 +17,6 @@ Route::get('/', function () {
 
 Route::get('movie-list','moviecontroller@index');
 
-Route::get('/ejemplo', function () {
-    return view('ejemplo');
-});
+Route::post('/getmsg', 'moviecontroller@insertar');
 
-Route::post('/getmsg', 'moviecontroller@ejemplo');
+Route::post('/delmsg', 'moviecontroller@eliminar');

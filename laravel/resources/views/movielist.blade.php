@@ -21,19 +21,44 @@
                 <th class="text-center"><b>Name</b></td>
                 <th class="text-center"><b>description</b></td>
                 <th class="text-center"><b>Image</b></td>
+                <th class="text-center"><b>Acciones</b></td>
              </tr>
            </thead>
            <tbody>
              @foreach ($users as $user)
-             <tr>
+             <tr id="tr{{$user->id}}" name="tr{{$user->id}}">
                 <td class="text-center">{{ $user->name }}</td>
                 <td class="text-center">{{ $user->description }}</td>
-                <td class="text-center">{{ $user->image }}</td>
+                <td class="text-center">
+                  <img src="uploads/{{ $user->image }}" class="img-circle" alt="Cinque Terre" width="100" height="100">
+                </td>
+                <td>
+                  <div class="col-xs-8">
+                    <div class="col-xs-6">
+                      <form method="post">
+                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                        <button type="button" class="btn btn-info" onclick="insertar();">
+                          <span class="glyphicon glyphicons-edit"></span> Edit
+                        </button>
+                      </form>
+                    </div>
+                    <div class="col-xs-6">
+                      <form method="post" name="del_form{{$user->id}}" id="del_form{{$user->id}}">
+                        <input type="hidden" name="identificador" id="identificador" value="{{$user->id}}">
+                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                        <button type="button" class="btn btn-danger" onclick="eliminar({{$user->id}});">
+                          <span class="glyphicon glyphicons-bin"></span> Delete
+                        </button>
+                      </form>
+                  </div>
+                </div>
+                </td>
              </tr>
              @endforeach
           </tbody>
       </table>
     </div>
+
 
     <div id = 'msg'>This message will be replaced using Ajax.
    Click the button to replace the message.</div>

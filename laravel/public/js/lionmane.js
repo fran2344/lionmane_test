@@ -16,3 +16,21 @@ function insertar(){
      }
   });
 }
+
+function eliminar(numero){
+  var str = $('#del_form'+numero).serialize();
+  $.ajax({
+    type:'POST',
+    url: '/delmsg',
+    data: str,
+    success: function(data){
+        $("#msg").html(data.msg);
+        $('#tabla_ajax tr#tr'+numero).remove();
+        alert("movie successfully delete");
+    }
+  });
+}
+
+function modificar(){
+
+}
