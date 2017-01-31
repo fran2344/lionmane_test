@@ -15,7 +15,6 @@ class moviecontroller extends Controller
   }
 
   public function insertar(Request $request){
-
      $nombre = $request->input('nombre');
      $descripcion = $request->input('descripcion');
      $file = $request->file('archivo');
@@ -24,7 +23,11 @@ class moviecontroller extends Controller
      $image = $file->getClientOriginalName();
      $msg = 'insert into movie(name, description, image) values("'.$nombre.'","'.$descripcion.'","'.$image.'");';
      DB::insert($msg);
-     $msg=$nombre.','.$descripcion.','.$image;
+     $consulta='select * from movie order by id desc limit 1;';
+     $users = DB::select($consulta);
+     foreach ($users as $user) {
+       $msg=$user->id.','.$user->name.','.$user->description.','.$user->image;
+     }
      return response()->json(array('msg'=> $msg));
   }
 
@@ -34,4 +37,33 @@ class moviecontroller extends Controller
      DB::delete($msg);
      return response()->json(array('msg'=> $msg));
   }
+
+  public function buscar(Request $request){
+    $ident = $request->input('identificador');
+    $msg = 'select * from movie where id='.$ident.";";
+    $users = DB::select($msg);
+    foreach ($users as $user) {
+      $msg=$user->id.','.$user->name.','.$user->description;
+    }
+    return response()->json(array('msg'=> $msg));
+  }
+
+  public function modificar(Request $request){
+    $id = $request->input('upd_hid');
+    $nombre = $request->input('upd_nombre');
+    $descripcion=$request->input('upd_descripcion');
+    $file = $request->file('upd_archivo');
+    $consulta='update movie set name="'.$nombre.'" ,description="'.$descripcion.'" where id='.$id.';';
+    $docu ="";
+    if ($file!=""){
+      $destinationPath = 'uploads';
+      $file->move($destinationPath,$file->getClientOriginalName());
+      $consulta='update movie set name="'.$nombre.'" ,description="'.$descripcion.'" ,image="'.$file->getClientOriginalName().'" where id='.$id.';';
+      $docu =$file->getClientOriginalName();
+    }
+    DB::update($consulta);
+    $msg=$id.','.$nombre.','.$descripcion.','.$docu;
+    return response()->json(array('msg'=> $msg));
+  }
+
 }

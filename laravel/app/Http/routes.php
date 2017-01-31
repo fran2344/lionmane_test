@@ -20,3 +20,7 @@ Route::get('movie-list','moviecontroller@index');
 Route::post('/getmsg', 'moviecontroller@insertar');
 
 Route::post('/delmsg', 'moviecontroller@eliminar');
+
+Route::post('/findmsg', 'moviecontroller@buscar');
+
+Route::post('/updmsg', 'moviecontroller@modificar');
